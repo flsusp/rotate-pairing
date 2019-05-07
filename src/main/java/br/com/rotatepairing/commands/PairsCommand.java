@@ -13,7 +13,8 @@ import static picocli.CommandLine.HelpCommand;
 @Command(subcommands = {
         HelpCommand.class,
         InitCommand.class,
-        PeopleCommand.class
+        PeopleCommand.class,
+        AffinityCommand.class
 })
 public class PairsCommand implements Callable<Void> {
 

@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
         name = "add", mixinStandardHelpOptions = true)
 public class AddPeopleCommand implements Callable<Void> {
 
-    private static final String PERSON_NAME_REGEX = "^[a-zA-Z][a-zA-Z0-9\\-_]*$";
+    private static final String PERSON_NAME_REGEX = "^[a-zA-Z][a-zA-Z0-9\\-_.]*$";
     private static final Pattern PERSON_NAME_PATTERN = Pattern.compile(PERSON_NAME_REGEX);
 
     @Parameters(arity = "1..*", description = "at least one person name matching regular expression " + PERSON_NAME_REGEX)
