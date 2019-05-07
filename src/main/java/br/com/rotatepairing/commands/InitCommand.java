@@ -1,4 +1,4 @@
-package br.com.flsusp.rotatepairing.commands;
+package br.com.rotatepairing.commands;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -21,7 +21,7 @@ public class InitCommand implements Callable<Void> {
     }
 
     public static boolean isInitialized() {
-        return false;
+        return new File(CONFIG_DIR).exists();
     }
 
     @Override
@@ -38,7 +38,7 @@ public class InitCommand implements Callable<Void> {
         createDir(CONFIG_DIR);
         createFileFromTemplate(CONFIG_DIR + "/pairing.history", "templates/pairing.history");
         createFileFromTemplate(CONFIG_DIR + "/people.history", "templates/people.history");
-        createFileFromTemplate(CONFIG_DIR + "/config", "templates/config");
+        createFileFromTemplate(CONFIG_DIR + "/config.yaml", "templates/config.yaml");
     }
 
     private void createFileFromTemplate(String fileToCreate, String templateFromClasspath) throws IOException {

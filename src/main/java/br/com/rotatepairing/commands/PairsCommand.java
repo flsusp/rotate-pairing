@@ -1,4 +1,4 @@
-package br.com.flsusp.rotatepairing.commands;
+package br.com.rotatepairing.commands;
 
 import picocli.CommandLine;
 
@@ -8,7 +8,8 @@ import static picocli.CommandLine.*;
 
 @Command(subcommands = {
         HelpCommand.class,
-        InitCommand.class
+        InitCommand.class,
+        PeopleCommand.class
 })
 public class PairsCommand implements Callable<Void> {
 
