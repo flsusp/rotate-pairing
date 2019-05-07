@@ -26,7 +26,8 @@ public class InitCommand implements Callable<Void> {
     @Override
     public Void call() throws Exception {
         if (isInitialized()) {
-            System.out.println("Current workspace already initialized. All created files reside in " + EnvironmentHolder.getEnvironment().getConfigurationDirectory() + " folder.");
+            EnvironmentHolder.getEnvironment().getScreen()
+                    .show("Current workspace already initialized. All created files reside in " + EnvironmentHolder.getEnvironment().getConfigurationDirectory() + " folder.");
         } else {
             initialize();
         }

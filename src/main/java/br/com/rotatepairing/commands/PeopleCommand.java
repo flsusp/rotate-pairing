@@ -1,8 +1,11 @@
 package br.com.rotatepairing.commands;
 
+import br.com.rotatepairing.EnvironmentHolder;
+import br.com.rotatepairing.PrintStreamScreenAdapter;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 
+import java.io.IOException;
 import java.util.concurrent.Callable;
 
 @Command(description = "Manage the people of the team.", name = "people",
@@ -18,8 +21,8 @@ public class PeopleCommand implements Callable<Void> {
     }
 
     @Override
-    public Void call() {
-        CommandLine.usage(this, System.out);
+    public Void call() throws IOException {
+        CommandLine.usage(this, new PrintStreamScreenAdapter(EnvironmentHolder.getEnvironment().getScreen()));
         return null;
     }
 }

@@ -1,6 +1,8 @@
 package br.com.rotatepairing.commands;
 
+import br.com.rotatepairing.EnvironmentHolder;
 import br.com.rotatepairing.PeopleHistory;
+import br.com.rotatepairing.Screen;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 
@@ -18,8 +20,11 @@ public class ListPeopleCommand implements Callable<Void> {
 
     @Override
     public Void call() throws IOException {
+        Screen screen = EnvironmentHolder.getEnvironment().getScreen();
+
         Stream.of(PeopleHistory.load().getCurrentPeople())
-                .forEach(person -> System.out.println("> " + person));
+                .forEach(person -> screen.show("> " + person));
+
         return null;
     }
 }

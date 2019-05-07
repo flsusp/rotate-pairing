@@ -1,5 +1,6 @@
 package br.com.rotatepairing.commands;
 
+import br.com.rotatepairing.EnvironmentHolder;
 import br.com.rotatepairing.PeopleHistory;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
@@ -37,7 +38,8 @@ public class AddPeopleCommand implements Callable<Void> {
         boolean errorFound = false;
         for (String person : people) {
             if (!PERSON_NAME_PATTERN.matcher(person).matches()) {
-                System.err.println("Person name should match regular expression " + PERSON_NAME_REGEX + ". Value '" + person + "' is not considered valid.");
+                EnvironmentHolder.getEnvironment().getScreen()
+                        .show("Person name should match regular expression " + PERSON_NAME_REGEX + ". Value '" + person + "' is not considered valid.");
                 errorFound = true;
             }
         }

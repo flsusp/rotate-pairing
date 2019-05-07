@@ -3,9 +3,11 @@ package br.com.rotatepairing;
 public class Environment {
 
     private final String homeDirectory;
+    private final Screen screen;
 
-    public Environment(String homeDirectory) {
+    public Environment(String homeDirectory, Screen screen) {
         this.homeDirectory = homeDirectory;
+        this.screen = screen;
     }
 
     public String getHomeDirectory() {
@@ -15,11 +17,15 @@ public class Environment {
     public String getConfigurationDirectory() {
         return getHomeDirectory() + "/.pairs";
     }
+
+    public Screen getScreen() {
+        return screen;
+    }
 }
 
 class DefaultEnvironment extends Environment {
 
     public DefaultEnvironment() {
-        super(".");
+        super(".", message -> System.out.println(message));
     }
 }
