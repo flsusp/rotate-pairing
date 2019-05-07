@@ -32,16 +32,29 @@ public class PeopleHistory {
         }
     }
 
-    private String[] getCurrentPeople() throws IOException {
+    public String[] getCurrentPeople() throws IOException {
         Set<String> people = new HashSet<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(InitCommand.CONFIG_DIR + CONFIG_FILE))) {
             String command;
             while ((command = reader.readLine()) != null) {
                 if (command.startsWith("+")) {
                     people.add(command.substring(1));
+                } else if (command.startsWith("-")) {
+                    people.remove(command.substring(1));
                 }
             }
         }
         return people.toArray(new String[0]);
+    }
+
+    public void removeAll(String[] peopleToRemove) throws IOException {
+        if (peopleToRemove.length > 0) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(InitCommand.CONFIG_DIR + CONFIG_FILE, true))) {
+                writer.write(Stream.of(peopleToRemove)
+                        .map(person -> "-" + person)
+                        .collect(joining("\n")));
+                writer.newLine();
+            }
+        }
     }
 }
