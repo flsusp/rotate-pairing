@@ -1,6 +1,5 @@
 package br.com.rotatepairing;
 
-import br.com.rotatepairing.commands.InitCommand;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.*;
@@ -23,7 +22,7 @@ public class PeopleHistory {
         peopleToAdd = ArrayUtils.removeElements(peopleToAdd, currentPeople);
 
         if (peopleToAdd.length > 0) {
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(InitCommand.CONFIG_DIR + CONFIG_FILE, true))) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(EnvironmentHolder.getEnvironment().getConfigurationDirectory() + CONFIG_FILE, true))) {
                 writer.write(Stream.of(peopleToAdd)
                         .map(person -> "+" + person)
                         .collect(joining("\n")));
@@ -34,7 +33,7 @@ public class PeopleHistory {
 
     public String[] getCurrentPeople() throws IOException {
         Set<String> people = new HashSet<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(InitCommand.CONFIG_DIR + CONFIG_FILE))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(EnvironmentHolder.getEnvironment().getConfigurationDirectory() + CONFIG_FILE))) {
             String command;
             while ((command = reader.readLine()) != null) {
                 if (command.startsWith("+")) {
@@ -49,7 +48,7 @@ public class PeopleHistory {
 
     public void removeAll(String[] peopleToRemove) throws IOException {
         if (peopleToRemove.length > 0) {
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(InitCommand.CONFIG_DIR + CONFIG_FILE, true))) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(EnvironmentHolder.getEnvironment().getConfigurationDirectory() + CONFIG_FILE, true))) {
                 writer.write(Stream.of(peopleToRemove)
                         .map(person -> "-" + person)
                         .collect(joining("\n")));

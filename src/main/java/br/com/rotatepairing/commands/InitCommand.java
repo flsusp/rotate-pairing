@@ -1,5 +1,6 @@
 package br.com.rotatepairing.commands;
 
+import br.com.rotatepairing.EnvironmentHolder;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import picocli.CommandLine;
@@ -14,20 +15,18 @@ import java.util.concurrent.Callable;
         name = "init", mixinStandardHelpOptions = true)
 public class InitCommand implements Callable<Void> {
 
-    public static final String CONFIG_DIR = "./.pairs";
-
     public static void main(String[] args) {
         CommandLine.call(new InitCommand(), args);
     }
 
     public static boolean isInitialized() {
-        return new File(CONFIG_DIR).exists();
+        return new File(EnvironmentHolder.getEnvironment().getConfigurationDirectory()).exists();
     }
 
     @Override
     public Void call() throws Exception {
         if (isInitialized()) {
-            System.out.println("Current workspace already initialized. All created files reside in " + CONFIG_DIR + " folder.");
+            System.out.println("Current workspace already initialized. All created files reside in " + EnvironmentHolder.getEnvironment().getConfigurationDirectory() + " folder.");
         } else {
             initialize();
         }
@@ -35,10 +34,12 @@ public class InitCommand implements Callable<Void> {
     }
 
     private void initialize() throws IOException {
-        createDir(CONFIG_DIR);
-        createFileFromTemplate(CONFIG_DIR + "/pairing.history", "templates/pairing.history");
-        createFileFromTemplate(CONFIG_DIR + "/people.history", "templates/people.history");
-        createFileFromTemplate(CONFIG_DIR + "/config.yaml", "templates/config.yaml");
+        String configurationDirectory = EnvironmentHolder.getEnvironment().getConfigurationDirectory();
+
+        createDir(configurationDirectory);
+        createFileFromTemplate(configurationDirectory + "/pairing.history", "templates/pairing.history");
+        createFileFromTemplate(configurationDirectory + "/people.history", "templates/people.history");
+        createFileFromTemplate(configurationDirectory + "/config.yaml", "templates/config.yaml");
     }
 
     private void createFileFromTemplate(String fileToCreate, String templateFromClasspath) throws IOException {
