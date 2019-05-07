@@ -1,0 +1,75 @@
+package br.com.rotatepairing;
+
+import br.com.rotatepairing.Pair;
+import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScoreHolder;
+
+global HardSoftScoreHolder scoreHolder;
+
+rule "nonNullPilot"
+    when
+        Pair(pilot == null);
+    then
+        scoreHolder.addHardConstraintMatch(kcontext, -10);
+end
+
+rule "avoidRepeatedPilotAsCopilot"
+    when
+        Pair(pilot==copilot)
+    then
+        scoreHolder.addHardConstraintMatch(kcontext, -100);
+end
+
+rule "avoidRepeatedPersonAsPilot"
+    when
+        $pair1 : Pair($pilot:pilot)
+        Pair(pilot==$pilot,this!=$pair1)
+    then
+        scoreHolder.addHardConstraintMatch(kcontext, -10);
+end
+
+rule "avoidRepeatedPersonAsCopilot"
+    when
+        $pair1 : Pair($copilot:copilot)
+        Pair(copilot==$copilot,this!=$pair1)
+    then
+        scoreHolder.addHardConstraintMatch(kcontext, -10);
+end
+
+rule "avoidRepeatedPilotAsCopilotInOtherPair"
+    when
+        $pair1 : Pair($pilot:pilot)
+        Pair(copilot==$pilot,this!=$pair1)
+    then
+        scoreHolder.addHardConstraintMatch(kcontext, -10);
+end
+
+rule "avoidRepeatedCopilotAsPilotInOtherPair"
+    when
+        $pair1 : Pair($copilot:copilot)
+        Pair(pilot==$copilot,this!=$pair1)
+    then
+        scoreHolder.addHardConstraintMatch(kcontext, -10);
+end
+
+rule "nonNullCopilot"
+    when
+        Pair(copilot==null);
+    then
+        scoreHolder.addSoftConstraintMatch(kcontext, -1);
+end
+
+rule "affinity1"
+    when
+        Pair($pilot:pilot,$copilot:copilot)
+        $affinity : PairAffinity(firstPerson==$pilot,secondPerson==$copilot)
+    then
+        scoreHolder.addSoftConstraintMatch(kcontext, $affinity.getNormalizedScore());
+end
+
+rule "affinity2"
+    when
+        Pair($pilot:pilot,$copilot:copilot)
+        $affinity : PairAffinity(firstPerson==$copilot,secondPerson==$pilot)
+    then
+        scoreHolder.addSoftConstraintMatch(kcontext, $affinity.getNormalizedScore());
+end

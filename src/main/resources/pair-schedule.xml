@@ -1,0 +1,11 @@
+<solver>
+    <scanAnnotatedClasses/>
+
+    <scoreDirectorFactory>
+        <scoreDrl>pair-schedule.drl</scoreDrl>
+    </scoreDirectorFactory>
+
+    <termination>
+        <secondsSpentLimit>15</secondsSpentLimit>
+    </termination>
+</solver>

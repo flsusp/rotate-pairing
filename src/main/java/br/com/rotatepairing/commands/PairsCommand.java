@@ -14,7 +14,8 @@ import static picocli.CommandLine.HelpCommand;
         HelpCommand.class,
         InitCommand.class,
         PeopleCommand.class,
-        AffinityCommand.class
+        AffinityCommand.class,
+        NextCommand.class
 })
 public class PairsCommand implements Callable<Void> {
 

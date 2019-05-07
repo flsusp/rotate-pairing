@@ -16,7 +16,7 @@ import static java.util.stream.Collectors.toList;
 public class PairingHistory {
 
     public static final String CONFIG_FILE = "/pairing.history";
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private Map<String, PairAffinityBuilder> pairsAffinity;
 
     public PairingHistory(Map<String, PairAffinityBuilder> pairsAffinity) {
