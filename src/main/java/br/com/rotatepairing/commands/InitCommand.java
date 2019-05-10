@@ -40,6 +40,7 @@ public class InitCommand implements Callable<Void> {
         createDir(configurationDirectory);
         createFileFromTemplate(configurationDirectory + "/pairing.history", "templates/pairing.history");
         createFileFromTemplate(configurationDirectory + "/people.history", "templates/people.history");
+        createFileFromTemplate(configurationDirectory + "/roles.history", "templates/roles.history");
         createFileFromTemplate(configurationDirectory + "/config.yaml", "templates/config.yaml");
     }
 
