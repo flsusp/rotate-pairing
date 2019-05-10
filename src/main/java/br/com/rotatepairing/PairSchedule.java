@@ -14,9 +14,20 @@ public class PairSchedule {
 
     private List<String> pilots;
     private List<String> copilots;
+    private List<String> roles;
     private List<PairAffinity> pairingHistory;
     private List<Pair> pairs;
     private HardSoftScore score;
+
+    @ValueRangeProvider(id = "availableRoles")
+    @ProblemFactCollectionProperty
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
+    }
 
     @ProblemFactCollectionProperty
     public List<PairAffinity> getPairingHistory() {
@@ -65,10 +76,10 @@ public class PairSchedule {
         this.score = score;
     }
 
-    public void print() {
+    public void print(Screen screen) {
         this.pairs.stream()
                 .map(Pair::toString)
-                .forEach(pair -> System.out.println(pair));
-        System.out.println(this.score);
+                .forEach(pair -> screen.show(pair));
+        screen.show(this.score.toString());
     }
 }

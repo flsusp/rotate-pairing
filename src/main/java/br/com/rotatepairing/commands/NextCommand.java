@@ -33,16 +33,18 @@ public class NextCommand implements Callable<Void> {
         Solver<PairSchedule> solver = solverFactory.buildSolver();
 
         List<String> people = asList(PeopleHistory.load().getCurrentPeople());
+        List<String> roles = asList(RoleHistory.load().getCurrentRoles());
 
         PairSchedule unsolvedCourseSchedule = new PairSchedule();
         unsolvedCourseSchedule.setPairingHistory(PairingHistory.load().buildPairAffinityList());
         unsolvedCourseSchedule.setPilots(people);
         unsolvedCourseSchedule.setCopilots(people);
+        unsolvedCourseSchedule.setRoles(roles);
         unsolvedCourseSchedule.setPairs(createPairsAccordingToNumberOfPeople(people.size()));
 
         PairSchedule solvedCourseSchedule = solver.solve(unsolvedCourseSchedule);
 
-        solvedCourseSchedule.print();
+        solvedCourseSchedule.print(screen);
 
         return null;
     }

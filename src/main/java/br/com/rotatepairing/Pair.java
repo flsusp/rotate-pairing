@@ -8,6 +8,16 @@ public class Pair {
 
     public String pilot;
     public String copilot;
+    public String role;
+
+    @PlanningVariable(valueRangeProviderRefs = {"availableRoles"})
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     @PlanningVariable(valueRangeProviderRefs = {"availablePilots"})
     public String getPilot() {
@@ -29,9 +39,6 @@ public class Pair {
 
     @Override
     public String toString() {
-        return "Pair{" +
-                "pilot='" + pilot + '\'' +
-                ", copilot='" + copilot + '\'' +
-                '}';
+        return pilot + " + " + copilot + " (" + role + ")";
     }
 }
