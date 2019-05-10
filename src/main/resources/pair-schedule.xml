@@ -3,6 +3,7 @@
 
     <scoreDirectorFactory>
         <scoreDrl>pair-schedule.drl</scoreDrl>
+        <scoreDrlFile>.pairs/custom.drl</scoreDrlFile>
     </scoreDirectorFactory>
 
     <termination>

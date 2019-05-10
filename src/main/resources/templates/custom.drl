@@ -1,0 +1,21 @@
+package br.com.rotatepairing;
+
+import br.com.rotatepairing.Pair;
+import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScoreHolder;
+
+global HardSoftScoreHolder scoreHolder;
+
+rule "onlyOneSupportPairExample"
+    when
+        $pair1 : Pair(role == "support")
+        $pair2 : Pair(role == "support")
+    then
+        scoreHolder.addHardConstraintMatch(kcontext, -100);
+end
+
+rule "atLeastOneSupportPairExample"
+    when
+        Pair(!(role == "support"))
+    then
+        scoreHolder.addHardConstraintMatch(kcontext, -100);
+end
