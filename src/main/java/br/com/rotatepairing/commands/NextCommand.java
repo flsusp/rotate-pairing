@@ -26,7 +26,7 @@ public class NextCommand implements Callable<Void> {
     @Override
     public Void call() throws IOException {
         Screen screen = EnvironmentHolder.getEnvironment().getScreen();
-        screen.show("Suggestion of pairs the next team iteration:");
+        screen.show("Suggestion of pairs to the next team iteration:");
 
         long startTimestamp = System.currentTimeMillis();
 

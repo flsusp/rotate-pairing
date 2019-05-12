@@ -39,6 +39,6 @@ public class Pair {
 
     @Override
     public String toString() {
-        return pilot + " + " + copilot + " (" + role + ")";
+        return "> " + pilot + " + " + copilot + " (" + role + ")";
     }
 }

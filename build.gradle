@@ -17,8 +17,10 @@ application {
 }
 
 dependencies {
-    compile 'org.optaplanner:optaplanner-core:7.20.0.Final'
-    compile 'info.picocli:picocli:4.0.0-alpha-2'
+    implementation 'org.optaplanner:optaplanner-core:7.20.0.Final'
+    implementation 'info.picocli:picocli:4.0.0-alpha-2'
+    implementation 'info.picocli:picocli:4.0.0-alpha-2'
+    implementation 'org.slf4j:slf4j-nop:1.7.26'
     implementation 'org.apache.commons:commons-io:1.3.2'
     testImplementation 'org.assertj:assertj-core:3.12.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.2'
