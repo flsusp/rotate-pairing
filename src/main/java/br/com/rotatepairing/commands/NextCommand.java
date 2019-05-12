@@ -28,23 +28,29 @@ public class NextCommand implements Callable<Void> {
         Screen screen = EnvironmentHolder.getEnvironment().getScreen();
         screen.show("Suggestion of pairs the next team iteration:");
 
+        long startTimestamp = System.currentTimeMillis();
+
         SolverFactory<PairSchedule> solverFactory = SolverFactory
                 .createFromXmlResource("pair-schedule.xml");
         Solver<PairSchedule> solver = solverFactory.buildSolver();
 
         List<String> people = asList(PeopleHistory.load().getCurrentPeople());
         List<String> roles = asList(RoleHistory.load().getCurrentRoles());
+        PairingHistory pairingHistory = PairingHistory.load();
 
         PairSchedule unsolvedCourseSchedule = new PairSchedule();
-        unsolvedCourseSchedule.setPairingHistory(PairingHistory.load().buildPairAffinityList());
-        unsolvedCourseSchedule.setPilots(people);
-        unsolvedCourseSchedule.setCopilots(people);
+        unsolvedCourseSchedule.setPairingAffinity(pairingHistory.buildPairAffinityList());
+        unsolvedCourseSchedule.setRoleAffinity(pairingHistory.buildRoleAffinityList());
+        unsolvedCourseSchedule.setPeople(people);
         unsolvedCourseSchedule.setRoles(roles);
         unsolvedCourseSchedule.setPairs(createPairsAccordingToNumberOfPeople(people.size()));
 
         PairSchedule solvedCourseSchedule = solver.solve(unsolvedCourseSchedule);
 
         solvedCourseSchedule.print(screen);
+
+        long endTimestamp = System.currentTimeMillis();
+        screen.show("Calculation took <%s> ms", (endTimestamp - startTimestamp));
 
         return null;
     }

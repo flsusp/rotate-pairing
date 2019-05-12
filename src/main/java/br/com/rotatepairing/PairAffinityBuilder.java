@@ -1,7 +1,5 @@
 package br.com.rotatepairing;
 
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.stream.Stream;
 
 public class PairAffinityBuilder implements Comparable<PairAffinityBuilder> {
@@ -15,15 +13,8 @@ public class PairAffinityBuilder implements Comparable<PairAffinityBuilder> {
         this.secondPerson = secondPerson;
     }
 
-    public void registerPairingLog(LocalDate week) {
-        double numberOfWeeks = ChronoUnit.WEEKS.between(week, LocalDate.now());
-        if (numberOfWeeks > 99.0) {
-            numberOfWeeks = 99.0;
-        }
-        if (numberOfWeeks < 1.0) {
-            numberOfWeeks = 1.0;
-        }
-        this.score = this.score - (100.0 / numberOfWeeks);
+    public void registerPairingLog(long numberOfWeeks) {
+        this.score = this.score - (100.0 / (double) numberOfWeeks);
     }
 
     public Stream<PairAffinity> build() {

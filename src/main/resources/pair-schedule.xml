@@ -1,12 +1,14 @@
 <solver>
     <scanAnnotatedClasses/>
 
+    <environmentMode>FAST_ASSERT</environmentMode>
+
     <scoreDirectorFactory>
         <scoreDrl>pair-schedule.drl</scoreDrl>
         <scoreDrlFile>.pairs/custom.drl</scoreDrlFile>
     </scoreDirectorFactory>
 
     <termination>
-        <secondsSpentLimit>15</secondsSpentLimit>
+        <secondsSpentLimit>30</secondsSpentLimit>
     </termination>
 </solver>

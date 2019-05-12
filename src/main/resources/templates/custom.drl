@@ -17,5 +17,5 @@ rule "atLeastOneSupportPairExample"
     when
         Pair(!(role == "support"))
     then
-        scoreHolder.addHardConstraintMatch(kcontext, -100);
+        scoreHolder.addHardConstraintMatch(kcontext, -200);
 end

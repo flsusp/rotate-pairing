@@ -55,10 +55,10 @@ rule "nonNullCopilot"
     when
         Pair(copilot==null);
     then
-        scoreHolder.addSoftConstraintMatch(kcontext, -1);
+        scoreHolder.addSoftConstraintMatch(kcontext, -100);
 end
 
-rule "affinity1"
+rule "pairingAffinityPilotCopilot"
     when
         Pair($pilot:pilot,$copilot:copilot)
         $affinity : PairAffinity(firstPerson==$pilot,secondPerson==$copilot)
@@ -66,10 +66,26 @@ rule "affinity1"
         scoreHolder.addSoftConstraintMatch(kcontext, $affinity.getNormalizedScore());
 end
 
-rule "affinity2"
+rule "pairingAffinityCopilotPilot"
     when
         Pair($pilot:pilot,$copilot:copilot)
         $affinity : PairAffinity(firstPerson==$copilot,secondPerson==$pilot)
+    then
+        scoreHolder.addSoftConstraintMatch(kcontext, $affinity.getNormalizedScore());
+end
+
+rule "roleAffinityPilot"
+    when
+        Pair($pilot:pilot,$role:role)
+        $affinity : RoleAffinity(person==$pilot,role==$role)
+    then
+        scoreHolder.addSoftConstraintMatch(kcontext, $affinity.getNormalizedScore());
+end
+
+rule "roleAffinityCopilot"
+    when
+        Pair($copilot:copilot,$role:role)
+        $affinity : RoleAffinity(person==$copilot,role==$role)
     then
         scoreHolder.addSoftConstraintMatch(kcontext, $affinity.getNormalizedScore());
 end

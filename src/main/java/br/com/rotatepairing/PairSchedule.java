@@ -12,10 +12,10 @@ import java.util.List;
 @PlanningSolution
 public class PairSchedule {
 
-    private List<String> pilots;
-    private List<String> copilots;
+    private List<String> people;
     private List<String> roles;
-    private List<PairAffinity> pairingHistory;
+    private List<PairAffinity> pairingAffinity;
+    private List<RoleAffinity> roleAffinity;
     private List<Pair> pairs;
     private HardSoftScore score;
 
@@ -30,12 +30,21 @@ public class PairSchedule {
     }
 
     @ProblemFactCollectionProperty
-    public List<PairAffinity> getPairingHistory() {
-        return pairingHistory;
+    public List<PairAffinity> getPairingAffinity() {
+        return pairingAffinity;
     }
 
-    public void setPairingHistory(List<PairAffinity> pairingHistory) {
-        this.pairingHistory = pairingHistory;
+    public void setPairingAffinity(List<PairAffinity> pairingAffinity) {
+        this.pairingAffinity = pairingAffinity;
+    }
+
+    @ProblemFactCollectionProperty
+    public List<RoleAffinity> getRoleAffinity() {
+        return roleAffinity;
+    }
+
+    public void setRoleAffinity(List<RoleAffinity> roleAffinity) {
+        this.roleAffinity = roleAffinity;
     }
 
     @PlanningEntityCollectionProperty
@@ -47,24 +56,14 @@ public class PairSchedule {
         this.pairs = pairs;
     }
 
-    @ValueRangeProvider(id = "availablePilots")
+    @ValueRangeProvider(id = "availablePeople")
     @ProblemFactCollectionProperty
-    public List<String> getPilots() {
-        return pilots;
+    public List<String> getPeople() {
+        return people;
     }
 
-    public void setPilots(List<String> pilots) {
-        this.pilots = pilots;
-    }
-
-    @ValueRangeProvider(id = "availableCopilots")
-    @ProblemFactCollectionProperty
-    public List<String> getCopilots() {
-        return copilots;
-    }
-
-    public void setCopilots(List<String> copilots) {
-        this.copilots = copilots;
+    public void setPeople(List<String> people) {
+        this.people = people;
     }
 
     @PlanningScore

@@ -19,7 +19,7 @@ public class Pair {
         this.role = role;
     }
 
-    @PlanningVariable(valueRangeProviderRefs = {"availablePilots"})
+    @PlanningVariable(valueRangeProviderRefs = {"availablePeople"})
     public String getPilot() {
         return pilot;
     }
@@ -28,7 +28,7 @@ public class Pair {
         this.pilot = pilot;
     }
 
-    @PlanningVariable(valueRangeProviderRefs = {"availableCopilots"}, nullable = true)
+    @PlanningVariable(valueRangeProviderRefs = {"availablePeople"}, nullable = true)
     public String getCopilot() {
         return copilot;
     }

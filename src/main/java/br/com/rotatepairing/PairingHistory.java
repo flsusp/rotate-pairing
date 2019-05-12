@@ -1,10 +1,13 @@
 package br.com.rotatepairing;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,13 +21,16 @@ public class PairingHistory {
     public static final String CONFIG_FILE = "/pairing.history";
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private Map<String, PairAffinityBuilder> pairsAffinity;
+    private Map<String, RoleAffinityBuilder> roleAffinity;
 
-    public PairingHistory(Map<String, PairAffinityBuilder> pairsAffinity) {
+    public PairingHistory(Map<String, PairAffinityBuilder> pairsAffinity, Map<String, RoleAffinityBuilder> roleAffinity) {
         this.pairsAffinity = pairsAffinity;
+        this.roleAffinity = roleAffinity;
     }
 
     public static PairingHistory load() throws IOException {
         Map<String, PairAffinityBuilder> pairsAffinity = generatePairs(PeopleHistory.load().getCurrentPeople());
+        Map<String, RoleAffinityBuilder> roleAffinity = new HashMap<>();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(EnvironmentHolder.getEnvironment().getConfigurationDirectory() + CONFIG_FILE))) {
             String line;
@@ -33,18 +39,43 @@ public class PairingHistory {
 
                 String pilot = attributes[0].trim();
                 String copilot = attributes[1].trim();
-                LocalDate week = LocalDate.parse(attributes[2].trim(), DATE_TIME_FORMATTER);
+                String role = attributes[2].trim();
+                LocalDate week = LocalDate.parse(attributes[3].trim(), DATE_TIME_FORMATTER);
+                long numberOfWeeks = calculateNumberOfWeeksFor(week);
 
                 String affinityKey = createAffinityKey(pilot, copilot);
                 if (pairsAffinity.containsKey(affinityKey)) {
-                    pairsAffinity.get(affinityKey).registerPairingLog(week);
+                    pairsAffinity.get(affinityKey).registerPairingLog(numberOfWeeks);
                 }
+
+                registerRoleAffinity(roleAffinity, pilot, role, numberOfWeeks);
+                registerRoleAffinity(roleAffinity, copilot, role, numberOfWeeks);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        return new PairingHistory(pairsAffinity);
+        return new PairingHistory(pairsAffinity, roleAffinity);
+    }
+
+    private static long calculateNumberOfWeeksFor(LocalDate week) {
+        long numberOfWeeks = ChronoUnit.WEEKS.between(week, LocalDate.now());
+        if (numberOfWeeks > 99L) {
+            numberOfWeeks = 99L;
+        }
+        if (numberOfWeeks < 1L) {
+            numberOfWeeks = 1L;
+        }
+        return numberOfWeeks;
+    }
+
+    private static void registerRoleAffinity(Map<String, RoleAffinityBuilder> roleAffinity, String person, String role, long numberOfWeeks) {
+        if (!StringUtils.isEmpty(person)) {
+            if (!roleAffinity.containsKey(person)) {
+                roleAffinity.put(person, new RoleAffinityBuilder(person));
+            }
+            roleAffinity.get(person).registerRoleLog(role, numberOfWeeks);
+        }
     }
 
     private static String createAffinityKey(String firstPerson, String secondPerson) {
@@ -75,6 +106,12 @@ public class PairingHistory {
     public List<PairAffinity> buildPairAffinityList() {
         return pairsAffinity.values().stream()
                 .flatMap(PairAffinityBuilder::build)
+                .collect(toList());
+    }
+
+    public List<RoleAffinity> buildRoleAffinityList() {
+        return roleAffinity.values().stream()
+                .flatMap(RoleAffinityBuilder::build)
                 .collect(toList());
     }
 }
