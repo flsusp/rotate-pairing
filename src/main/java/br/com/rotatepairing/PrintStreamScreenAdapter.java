@@ -19,7 +19,6 @@ public class PrintStreamScreenAdapter extends PrintStream {
                     screen.show(line);
                 }
             } catch (IOException e) {
-                throw new RuntimeException(e);
             }
         }, "piped-screen").start();
 

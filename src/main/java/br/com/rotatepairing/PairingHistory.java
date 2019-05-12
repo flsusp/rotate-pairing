@@ -110,7 +110,7 @@ public class PairingHistory {
     public void printPairsAffinity(Screen screen) {
         pairsAffinity.values().stream()
                 .sorted()
-                .forEach(pairAffinity -> screen.show("> %12s + %12s => %3d", pairAffinity.getFirstPerson(), pairAffinity.getSecondPerson(), pairAffinity.getNormalizedScore()));
+                .forEach(pairAffinity -> screen.show("> %20s + %20s => %3d", pairAffinity.getFirstPerson(), pairAffinity.getSecondPerson(), pairAffinity.getNormalizedScore()));
     }
 
     public List<PairAffinity> buildPairAffinityList() {
