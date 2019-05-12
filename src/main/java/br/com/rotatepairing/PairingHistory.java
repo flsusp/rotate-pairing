@@ -2,9 +2,7 @@ package br.com.rotatepairing;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -96,6 +94,17 @@ public class PairingHistory {
                         .forEach(copilot -> pairAffinityMap.put(createAffinityKey(firstPerson, copilot), new PairAffinityBuilder(firstPerson, copilot))));
 
         return pairAffinityMap;
+    }
+
+    public static void save(List<Pair> pairs) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(EnvironmentHolder.getEnvironment().getConfigurationDirectory() + CONFIG_FILE, true))) {
+            for (Pair pair : pairs) {
+                writer.write(pair.pilot + "," + pair.copilot + "," + pair.role + "," + DATE_TIME_FORMATTER.format(LocalDate.now()));
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void printPairsAffinity(Screen screen) {

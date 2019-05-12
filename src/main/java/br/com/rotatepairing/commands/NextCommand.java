@@ -16,7 +16,7 @@ import static java.util.Arrays.asList;
         name = "next", mixinStandardHelpOptions = true)
 public class NextCommand implements Callable<Void> {
 
-    @CommandLine.Option(names = "-s", description = "save suggestion to team history", defaultValue = "false")
+    @CommandLine.Option(names = {"-s", "--save"}, description = "save suggestion to pairing history", defaultValue = "false")
     boolean save;
 
     public static void main(String[] args) {
@@ -38,19 +38,23 @@ public class NextCommand implements Callable<Void> {
         List<String> roles = asList(RoleHistory.load().getCurrentRoles());
         PairingHistory pairingHistory = PairingHistory.load();
 
-        PairSchedule unsolvedCourseSchedule = new PairSchedule();
-        unsolvedCourseSchedule.setPairingAffinity(pairingHistory.buildPairAffinityList());
-        unsolvedCourseSchedule.setRoleAffinity(pairingHistory.buildRoleAffinityList());
-        unsolvedCourseSchedule.setPeople(people);
-        unsolvedCourseSchedule.setRoles(roles);
-        unsolvedCourseSchedule.setPairs(createPairsAccordingToNumberOfPeople(people.size()));
+        PairSchedule unsolvedPairSchedule = new PairSchedule();
+        unsolvedPairSchedule.setPairingAffinity(pairingHistory.buildPairAffinityList());
+        unsolvedPairSchedule.setRoleAffinity(pairingHistory.buildRoleAffinityList());
+        unsolvedPairSchedule.setPeople(people);
+        unsolvedPairSchedule.setRoles(roles);
+        unsolvedPairSchedule.setPairs(createPairsAccordingToNumberOfPeople(people.size()));
 
-        PairSchedule solvedCourseSchedule = solver.solve(unsolvedCourseSchedule);
+        PairSchedule solvedPairSchedule = solver.solve(unsolvedPairSchedule);
 
-        solvedCourseSchedule.print(screen);
+        solvedPairSchedule.print(screen);
 
         long endTimestamp = System.currentTimeMillis();
         screen.show("Calculation took <%s> ms", (endTimestamp - startTimestamp));
+
+        if (save) {
+            PairingHistory.save(solvedPairSchedule.getPairs());
+        }
 
         return null;
     }
