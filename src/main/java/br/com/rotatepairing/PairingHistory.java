@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Stream;
 
+import static java.util.Comparator.comparingDouble;
 import static java.util.stream.Collectors.toList;
 
 public class PairingHistory {
@@ -97,7 +98,7 @@ public class PairingHistory {
         return pairAffinityMap;
     }
 
-    public void printAffinity(Screen screen) {
+    public void printPairsAffinity(Screen screen) {
         pairsAffinity.values().stream()
                 .sorted()
                 .forEach(pairAffinity -> screen.show("> %32s + %32s => %3d", pairAffinity.getFirstPerson(), pairAffinity.getSecondPerson(), pairAffinity.getNormalizedScore()));
@@ -113,5 +114,15 @@ public class PairingHistory {
         return roleAffinity.values().stream()
                 .flatMap(RoleAffinityBuilder::build)
                 .collect(toList());
+    }
+
+    public void printRolesAffinity(Screen screen, List<String> people) {
+        roleAffinity.values().stream()
+                .flatMap(RoleAffinityBuilder::build)
+                .filter(roleAffinity -> people.contains(roleAffinity.getPerson()))
+                .sorted(comparingDouble(RoleAffinity::getNormalizedScore).reversed()
+                        .thenComparing(RoleAffinity::getPerson)
+                        .thenComparing(RoleAffinity::getRole))
+                .forEach(roleAffinity -> screen.show("> %32s + %32s => %3d", roleAffinity.getPerson(), roleAffinity.getRole(), roleAffinity.getNormalizedScore()));
     }
 }
