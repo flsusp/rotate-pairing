@@ -5,18 +5,20 @@ import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScoreHolder;
 
 global HardSoftScoreHolder scoreHolder;
 
+// -- Pairing consistency hard constraints
+
 rule "nonNullPilot"
     when
         Pair(pilot == null);
     then
-        scoreHolder.addHardConstraintMatch(kcontext, -10);
+        scoreHolder.addHardConstraintMatch(kcontext, -1000);
 end
 
 rule "avoidRepeatedPilotAsCopilot"
     when
         Pair(pilot==copilot)
     then
-        scoreHolder.addHardConstraintMatch(kcontext, -100);
+        scoreHolder.addHardConstraintMatch(kcontext, -1000);
 end
 
 rule "avoidRepeatedPersonAsPilot"
@@ -24,7 +26,7 @@ rule "avoidRepeatedPersonAsPilot"
         $pair1 : Pair($pilot:pilot)
         Pair(pilot==$pilot,this!=$pair1)
     then
-        scoreHolder.addHardConstraintMatch(kcontext, -10);
+        scoreHolder.addHardConstraintMatch(kcontext, -1000);
 end
 
 rule "avoidRepeatedPersonAsCopilot"
@@ -32,7 +34,7 @@ rule "avoidRepeatedPersonAsCopilot"
         $pair1 : Pair($copilot:copilot)
         Pair(copilot==$copilot,this!=$pair1)
     then
-        scoreHolder.addHardConstraintMatch(kcontext, -10);
+        scoreHolder.addHardConstraintMatch(kcontext, -1000);
 end
 
 rule "avoidRepeatedPilotAsCopilotInOtherPair"
@@ -40,7 +42,7 @@ rule "avoidRepeatedPilotAsCopilotInOtherPair"
         $pair1 : Pair($pilot:pilot)
         Pair(copilot==$pilot,this!=$pair1)
     then
-        scoreHolder.addHardConstraintMatch(kcontext, -10);
+        scoreHolder.addHardConstraintMatch(kcontext, -1000);
 end
 
 rule "avoidRepeatedCopilotAsPilotInOtherPair"
@@ -48,8 +50,10 @@ rule "avoidRepeatedCopilotAsPilotInOtherPair"
         $pair1 : Pair($copilot:copilot)
         Pair(pilot==$copilot,this!=$pair1)
     then
-        scoreHolder.addHardConstraintMatch(kcontext, -10);
+        scoreHolder.addHardConstraintMatch(kcontext, -1000);
 end
+
+// -- Desireable soft constraints
 
 rule "nonNullCopilot"
     when

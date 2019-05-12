@@ -21,6 +21,6 @@ public class RoleAffinity {
     }
 
     public int getNormalizedScore() {
-        return (int) (score / 10.0);
+        return (int) (score / 15.0);
     }
 }

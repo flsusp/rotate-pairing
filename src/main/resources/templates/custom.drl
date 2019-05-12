@@ -8,14 +8,14 @@ global HardSoftScoreHolder scoreHolder;
 rule "onlyOneSupportPairExample"
     when
         $pair1 : Pair(role == "support")
-        $pair2 : Pair(role == "support")
+        $pair2 : Pair(pilot != $pair1.pilot, role == "support")
     then
-        scoreHolder.addHardConstraintMatch(kcontext, -100);
+        scoreHolder.addHardConstraintMatch(kcontext, -1000);
 end
 
 rule "atLeastOneSupportPairExample"
     when
         Pair(!(role == "support"))
     then
-        scoreHolder.addHardConstraintMatch(kcontext, -200);
+        scoreHolder.addHardConstraintMatch(kcontext, -1000);
 end
