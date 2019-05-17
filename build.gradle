@@ -4,7 +4,7 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '5.0.0'
 }
 
-group 'com.latam.bravajuliett.tools'
+group 'br.com.rotatepairing'
 version '1.0.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
@@ -15,6 +15,13 @@ repositories {
 
 application {
     mainClassName = 'br.com.rotatepairing.commands.PairsCommand'
+}
+
+shadowJar {
+    version = null
+    manifest {
+        attributes( 'Main-Class': mainClassName, 'version': project.version )
+    }
 }
 
 dependencies {
@@ -29,3 +36,27 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:2.18.3'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.2'
 }
+
+task createDistDir {
+    doLast {
+        mkdir "$buildDir/dist"
+    }
+}
+
+task copyArtifactsToDistDir(type: Copy) {
+    dependsOn createDistDir
+
+    from "$buildDir/build/libs/rotate-pairing-all.jar", "$buildDir/pairs"
+    into "$buildDir/dist"
+}
+
+task dist(type: Zip) {
+    dependsOn copyArtifactsToDistDir
+
+    archiveFileName = "pairs.zip"
+    destinationDirectory = file("$buildDir/dist")
+
+    from "$buildDir/dist"
+}
+
+project.tasks.assemble.dependsOn project.tasks.dist
