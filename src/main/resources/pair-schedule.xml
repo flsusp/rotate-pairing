@@ -1,5 +1,7 @@
 <solver>
-    <scanAnnotatedClasses/>
+    <scanAnnotatedClasses>
+        <packageInclude>br.com.rotatepairing</packageInclude>
+    </scanAnnotatedClasses>
 
     <environmentMode>FAST_ASSERT</environmentMode>
 
