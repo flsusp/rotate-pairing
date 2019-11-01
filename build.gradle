@@ -1,3 +1,5 @@
+import com.github.jengelman.gradle.plugins.shadow.transformers.AppendingTransformer;
+
 plugins {
     id 'java'
     id 'application'
@@ -22,6 +24,7 @@ shadowJar {
     manifest {
         attributes( 'Main-Class': mainClassName, 'version': project.version )
     }
+    transform(new AppendingTransformer(resource: 'META-INF/kie.conf'))
 }
 
 dependencies {
