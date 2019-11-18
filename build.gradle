@@ -28,7 +28,7 @@ shadowJar {
 }
 
 dependencies {
-    implementation 'org.optaplanner:optaplanner-core:7.20.0.Final'
+    implementation 'org.optaplanner:optaplanner-core:7.29.0.Final'
     implementation 'info.picocli:picocli:4.0.0-alpha-2'
     implementation 'info.picocli:picocli:4.0.0-alpha-2'
     implementation 'org.slf4j:slf4j-nop:1.7.26'

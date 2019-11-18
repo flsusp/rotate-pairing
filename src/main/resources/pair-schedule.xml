@@ -3,7 +3,7 @@
         <packageInclude>br.com.rotatepairing</packageInclude>
     </scanAnnotatedClasses>
 
-    <environmentMode>FAST_ASSERT</environmentMode>
+    <environmentMode>NON_REPRODUCIBLE</environmentMode>
 
     <scoreDirectorFactory>
         <scoreDrl>pair-schedule.drl</scoreDrl>
@@ -11,6 +11,20 @@
     </scoreDirectorFactory>
 
     <termination>
-        <secondsSpentLimit>15</secondsSpentLimit>
+        <secondsSpentLimit>30</secondsSpentLimit>
     </termination>
+
+    <constructionHeuristic>
+        <constructionHeuristicType>FIRST_FIT_DECREASING</constructionHeuristicType>
+    </constructionHeuristic>
+
+    <localSearch>
+        <acceptor>
+          <lateAcceptanceSize>400</lateAcceptanceSize>
+          <entityTabuSize>5</entityTabuSize>
+        </acceptor>
+        <forager>
+          <acceptedCountLimit>1</acceptedCountLimit>
+        </forager>
+    </localSearch>
 </solver>

@@ -19,6 +19,9 @@ public class NextCommand implements Callable<Void> {
     @CommandLine.Option(names = {"-s", "--save"}, description = "save suggestion to pairing history", defaultValue = "false")
     boolean save;
 
+    @CommandLine.Option(names = {"-p", "--number-of-pairs"}, description = "number of pairs to generate", defaultValue = "-1")
+    int numberOfPairs;
+
     public static void main(String[] args) {
         CommandLine.call(new NextCommand(), args);
     }
@@ -43,7 +46,12 @@ public class NextCommand implements Callable<Void> {
         unsolvedPairSchedule.setRoleAffinity(pairingHistory.buildRoleAffinityList());
         unsolvedPairSchedule.setPeople(people);
         unsolvedPairSchedule.setRoles(roles);
-        unsolvedPairSchedule.setPairs(createPairsAccordingToNumberOfPeople(people.size()));
+
+        if (numberOfPairs <= 0) {
+            unsolvedPairSchedule.setPairs(createPairsAccordingToNumberOfPeople(people.size()));
+        } else {
+            unsolvedPairSchedule.setPairs(createPairsListOfSize(numberOfPairs));
+        }
 
         PairSchedule solvedPairSchedule = solver.solve(unsolvedPairSchedule);
 
@@ -65,6 +73,10 @@ public class NextCommand implements Callable<Void> {
             numberOfPairs++;
         }
 
+        return createPairsListOfSize(numberOfPairs);
+    }
+
+    private List<Pair> createPairsListOfSize(int numberOfPairs) {
         List<Pair> pairs = new ArrayList<>();
         for (int i = 0; i < numberOfPairs; i++) {
             pairs.add(new Pair());

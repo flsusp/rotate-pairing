@@ -1,9 +1,12 @@
 package br.com.rotatepairing;
 
+import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.optaplanner.core.api.domain.entity.PlanningEntity;
 import org.optaplanner.core.api.domain.variable.PlanningVariable;
 
-@PlanningEntity
+import java.util.Comparator;
+
+@PlanningEntity(difficultyComparatorClass = PairComparator.class)
 public class Pair {
 
     public String pilot;
@@ -42,3 +45,4 @@ public class Pair {
         return "> " + pilot + " + " + copilot + " (" + role + ")";
     }
 }
+
